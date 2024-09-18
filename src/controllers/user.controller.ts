@@ -1,17 +1,34 @@
 // Uncomment these imports to begin using these cool features!
-
 import {get, getModelSchemaRef, post, requestBody} from '@loopback/rest';
 import {User} from '../models/user.model';
-
 // import {inject} from '@loopback/core';
 
-export class HelloController {
+export class UserController {
   @get('/hello')
   hello(): string {
     return 'Hello world!';
   }
 
-  @post('/user', {
+  @get('/users', {
+    responses: {
+      '200': {
+        description: 'Get all users successfully',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'array',
+              items: getModelSchemaRef(User, {includeRelations: true}),
+            },
+          },
+        },
+      },
+    },
+  })
+  async getAllUser(): Promise<User[]> {
+    return [];
+  }
+
+  @post('/users', {
     responses: {
       '200': {
         description: 'User model instance',
@@ -24,7 +41,7 @@ export class HelloController {
       content: {
         'application/json': {
           schema: getModelSchemaRef(User, {
-            title: 'New User',
+            title: 'Create new user',
             exclude: ['id'],
           }),
         },
