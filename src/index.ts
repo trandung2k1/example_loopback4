@@ -18,6 +18,19 @@ if (require.main === module) {
   // Run the application
   const config = {
     rest: {
+      requestBodyParser: {json: {limit: '1mb'}},
+      expressSettings: {
+        'x-powered-by': false,
+        // env: 'production',
+      },
+      cors: {
+        origin: '*',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        preflightContinue: false,
+        optionsSuccessStatus: 204,
+        maxAge: 86400,
+        credentials: true,
+      },
       port: +(process.env.PORT ?? 3000),
       host: process.env.HOST,
       // The `gracePeriodForClose` provides a graceful close for http/https

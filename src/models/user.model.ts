@@ -3,14 +3,18 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 import {Entity, model, property} from '@loopback/repository';
-@model()
+@model({
+  settings: {
+    strictObjectIDCoercion: true,
+  },
+})
 export class User extends Entity {
   @property({
-    type: 'number',
+    type: 'string',
     id: true,
-    generated: true,
+    mongodb: {dataType: 'ObjectId'},
   })
-  id?: number;
+  id: string;
 
   @property({
     type: 'string',
@@ -24,7 +28,16 @@ export class User extends Entity {
   })
   password: string;
 
+  // @belongsTo(() => Profile)
+  // profileId: string;
+
   constructor(data: Partial<User>) {
     super(data);
   }
 }
+
+export interface UserRelations {
+  // profile?: Profile; // Defines a relation to the Category model
+}
+
+export type UsertWithRelations = User & UserRelations;

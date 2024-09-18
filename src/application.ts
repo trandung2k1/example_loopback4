@@ -1,13 +1,14 @@
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
+import {RepositoryMixin} from '@loopback/repository';
+import {RestApplication} from '@loopback/rest';
 import {
   RestExplorerBindings,
   RestExplorerComponent,
 } from '@loopback/rest-explorer';
-import {RepositoryMixin} from '@loopback/repository';
-import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
+import {MongodbDataSource} from './datasources/mongodb.datasource';
 import {MySequence} from './sequence';
 
 export {ApplicationConfig};
@@ -20,6 +21,7 @@ export class MyAppApplication extends BootMixin(
 
     // Set up the custom sequence
     this.sequence(MySequence);
+    this.dataSource(MongodbDataSource);
 
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
@@ -29,6 +31,7 @@ export class MyAppApplication extends BootMixin(
       path: '/explorer',
     });
     this.component(RestExplorerComponent);
+    // Access the underlying Express app
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
