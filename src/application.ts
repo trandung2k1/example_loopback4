@@ -1,3 +1,9 @@
+import {AuthenticationComponent} from '@loopback/authentication';
+import {
+  JWTAuthenticationComponent,
+  MyUserService,
+  UserServiceBindings,
+} from '@loopback/authentication-jwt';
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
@@ -21,7 +27,6 @@ export class MyAppApplication extends BootMixin(
 
     // Set up the custom sequence
     this.sequence(MySequence);
-    this.dataSource(MongodbDataSource);
 
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
@@ -43,5 +48,11 @@ export class MyAppApplication extends BootMixin(
         nested: true,
       },
     };
+    // Mount authentication system
+    this.component(AuthenticationComponent);
+    // Mount jwt component
+    this.component(JWTAuthenticationComponent);
+    this.dataSource(MongodbDataSource, UserServiceBindings.DATASOURCE_NAME);
+    this.bind(UserServiceBindings.USER_SERVICE).toClass(MyUserService);
   }
 }

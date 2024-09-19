@@ -2,25 +2,21 @@
 // Node module: @loopback/example-todo-list
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-import {Entity, model, property} from '@loopback/repository';
+import {User} from '@loopback/authentication-jwt';
+import {model, property} from '@loopback/repository';
 @model({
   settings: {
     strictObjectIDCoercion: true,
+    mongodb: {collection: 'users'},
   },
 })
-export class User extends Entity {
+export class UserModel extends User {
   @property({
     type: 'string',
     id: true,
-    mongodb: {dataType: 'ObjectId'},
   })
   id: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  email: string;
+  mongodb: {dataType: 'ObjectId'};
 
   @property({
     type: 'string',
@@ -31,13 +27,13 @@ export class User extends Entity {
   // @belongsTo(() => Profile)
   // profileId: string;
 
-  constructor(data: Partial<User>) {
-    super(data);
-  }
+  // constructor(data: Partial<User>) {
+  //   super(data);
+  // }
 }
 
-export interface UserRelations {
-  // profile?: Profile; // Defines a relation to the Category model
-}
+// export interface UserRelations {
+//   // profile?: Profile; // Defines a relation to the Category model
+// }
 
-export type UsertWithRelations = User & UserRelations;
+// export type UsertWithRelations = User & UserRelations;
